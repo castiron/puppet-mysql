@@ -10,7 +10,7 @@ define mysql::db($ensure = present) {
 
   if $ensure == 'present' {
     exec { "create mysql db ${name}":
-      command => "mysqladmin -uroot -p13306 create ${name} --password=''",
+      command => "mysql -uroot -e 'create database ${name} default character set utf8 default collate utf8_unicode_ci'",
       creates => "${mysql::config::datadir}/${name}",
       require => Exec['wait-for-mysql'],
       unless  => "mysql -uroot -p13306 -e 'show databases' \
